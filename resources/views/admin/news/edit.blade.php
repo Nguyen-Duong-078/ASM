@@ -22,7 +22,7 @@
                         <h4 class="mb-1 mt-3">Cập nhật loại tin</h4>
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-3">
-                        <button type="reset" class="btn btn-outline-secondary">Loại Bỏ</button>
+                        <a href="{{ route('admin.news.index') }}" class="btn btn-info">Quay Lại</a>
                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
                     </div>
                 </div>

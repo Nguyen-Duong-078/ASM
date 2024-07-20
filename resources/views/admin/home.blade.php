@@ -1,4 +1,4 @@
-@extends('client.layouts.app')
+@extends('layouts.app')
 
 @section('content')
     <!-- start of banner -->

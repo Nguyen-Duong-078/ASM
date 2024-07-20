@@ -44,7 +44,7 @@ class CategoryController extends Controller
         Category::query()->create($data);
 
         // Quay về index
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.categorys.index');
     }
 
     public function show(string $id)
