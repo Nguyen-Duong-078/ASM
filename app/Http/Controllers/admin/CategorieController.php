@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categorie;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class CategoryController extends Controller
+class CategorieController extends Controller
 {
-    const PATH_VIEW = 'admin.categorys.';
-    const PATH_UPLOAD = 'category';
+    const PATH_VIEW = 'admin.categories.';
+    const PATH_UPLOAD = 'categorie';
 
 
 
     public function index()
     {
-        $category = Category::query()->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('category'));
+        $categories = Categorie::query()->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('categories'));
     }
 
 
@@ -30,6 +31,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         // Lấy tất cả dữ liệu trừ cover
+
         $data = $request->except('cover');
 
         // Chưa chọn mặc định 0
@@ -41,28 +43,30 @@ class CategoryController extends Controller
         }
 
         // Thêm mới
-        Category::query()->create($data);
+        Categorie::query()->create($data);
 
         // Quay về index
-        return redirect()->route('admin.categorys.index');
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', 'Thêm mới thành công');
     }
 
     public function show(string $id)
     {
-        $data = Category::query()->findOrFail($id);
+        $data = Categorie::query()->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     public function edit(string $id)
     {
-        $data = Category::query()->findOrFail($id);
+        $data = Categorie::query()->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
 
     public function update(Request $request, string $id)
     {
-        $category = Category::query()->findOrFail($id);
+        $categorie = Categorie::query()->findOrFail($id);
 
         // Lấy tất cả dữ liệu trừ cover
         $data = $request->except('cover');
@@ -74,32 +78,32 @@ class CategoryController extends Controller
         if ($request->hasFile('cover')) {
             $data['cover'] = Storage::put(self::PATH_UPLOAD, $request->file('cover'));
         }
-        $CoverPath = $category->cover;
+        $CoverPath = $categorie->cover;
 
         // Cập nhật dữ liệu
-        $category->update($data);
+        $categorie->update($data);
 
         // Xóa ảnh cũ
-        if ($CoverPath && Storage::exists($CoverPath) && $CoverPath !== $category->cover) {
+        if ($CoverPath && Storage::exists($CoverPath) && $CoverPath !== $categorie->cover) {
             Storage::delete($CoverPath);
         }
 
-        return back();
+        return back()->with('success', 'Cập nhật thành công');
     }
 
     public function destroy(string $id)
     {
         // Lấy dữ liệu
-        $category = Category::query()->findOrFail($id);
+        $categorie = Categorie::query()->findOrFail($id);
 
         // Xóa
-        $category->delete();
+        $categorie->delete();
 
         // Xóa ảnh nếu có
-        if ($category->cover && Storage::exists($category->cover)) {
-            Storage::delete($category->cover);
+        if ($categorie->cover && Storage::exists($categorie->cover)) {
+            Storage::delete($categorie->cover);
         }
 
-        return back();
+        return back()->with('success', 'Xóa thành công');
     }
 }

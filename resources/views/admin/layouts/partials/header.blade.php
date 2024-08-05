@@ -1,8 +1,5 @@
 <!-- Menu -->
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-
-
     <div class="app-brand demo ">
         <a href="/admin/" class="app-brand-link">
             <span class="app-brand-logo demo me-1">
@@ -19,7 +16,7 @@
                     </svg>
                 </span>
             </span>
-            <span class="app-brand-text demo menu-text fw-semibold ms-2">𝑪𝒐𝒎𝒑𝒖𝒕𝒆𝒓</span>
+            <span class="app-brand-text demo menu-text fw-semibold ms-2">𝐄𝐜𝐨𝐦𝐦𝐞𝐫𝐜𝐞</span>
         </a>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
             <i class="mdi menu-toggle-icon d-xl-block align-middle mdi-20px"></i>
@@ -51,12 +48,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="/admin/categorys/create" class="menu-link">
+                    <a href="/admin/categories/create" class="menu-link">
                         <div data-i18n="Thêm mới">Thêm mới</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/admin/categorys" class="menu-link">
+                    <a href="/admin/categories" class="menu-link">
                         <div data-i18n="Danh sách">Danh sách</div>
                     </a>
                 </li>
@@ -85,19 +82,19 @@
         <li class="menu-header fw-medium mt-2">
             <span class="menu-header-text" data-i18n="Thông báo &amp; Quyền">Thông báo &amp; Quyền</span>
         </li>
-        <li class="menu-item">
+        {{-- <li class="menu-item">
             <a href="" class="menu-link">
                 <i class='menu-icon tf-icons mdi mdi-bell-badge-outline'></i>
                 <div data-i18n="Thông Báo">Thông Báo</div>
             </a>
-        </li>
+        </li> --}}
 
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="/admin/members" class="menu-link">
                 <i class='menu-icon tf-icons mdi mdi-account-group'></i>
                 <div data-i18n="Thành Viên">Thành Viên</div>
             </a>
-            <ul class="menu-sub">
+            {{-- <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="/admin/catelogues/create" class="menu-link">
                         <div data-i18n="Thêm mới danh mục">Thêm mới danh mục</div>
@@ -108,16 +105,16 @@
                         <div data-i18n="Danh sách danh mục">Danh sách danh mục</div>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
         </li>
 
-        <li class="menu-item">
+        {{-- <li class="menu-item">
             <a href="" class="menu-link">
                 <i class='menu-icon tf-icons mdi mdi-account-lock-open-outline'></i>
                 <div data-i18n="Quyền Truy Cập">Quyền Truy Cập</div>
             </a>
-        </li>
-
+        </li> --}}
+        {{--
         <li class="menu-header fw-medium mt-2">
             <span class="menu-header-text" data-i18n="Thống kê">Thống kê</span>
         </li>
@@ -126,10 +123,7 @@
                 <i class='menu-icon tf-icons mdi mdi-chart-bar'></i>
                 <div data-i18n="Thống Kê">Thống Kê</div>
             </a>
-        </li>
-
+        </li> --}}
     </ul>
-
-
 </aside>
 <!-- / Menu -->

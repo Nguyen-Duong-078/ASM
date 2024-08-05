@@ -6,7 +6,7 @@
     </svg>
 
     <div class="instafeed text-center mb-2">
-        <h2 class="h3 mb-4">INSTAGRAM POST</h2>
+        <h2 class="h3 mb-4">Tin tức</h2>
 
         <div class="instagram-slider">
             <div class="instagram-post"><img src="{{ asset('themes') }}/client/images/instagram/1.jpg">

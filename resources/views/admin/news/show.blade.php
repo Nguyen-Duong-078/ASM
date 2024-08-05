@@ -35,7 +35,7 @@
                                     {{-- <label for="ecommerce-product-name">Cover</label> --}}
                                 </div>
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <input type="text" class="form-control"value="{{ $data->category->name }}" disabled>
+                                    <input type="text" class="form-control"value="{{ $data->categorie->name }}" disabled>
                                     <label for="ecommerce-product-name">Loại tin</label>
                                 </div>
                                 <div class="form-floating form-floating-outline mb-4">

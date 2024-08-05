@@ -12,43 +12,23 @@
                             Trang Chủ
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="shop.html">Sản Phẩm</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">Trang <i class="ti-angle-down ml-1"></i>
+                            aria-expanded="false">Thể Loại <i class="ti-angle-down ml-1"></i>
                         </a>
                         <div class="dropdown-menu">
-
-                            <a class="dropdown-item" href="author.html">Tác giả</a>
-
-                            <a class="dropdown-item" href="author-single.html">Tác giả Đơn lẻ</a>
-
-                            <a class="dropdown-item" href="advertise.html">Quảng cáo</a>
-
-                            <a class="dropdown-item" href="post-details.html">Chi tiết bài đăng</a>
-
-                            <a class="dropdown-item" href="post-elements.html">Thành phần bài đăng</a>
-
-                            <a class="dropdown-item" href="tags.html">Thẻ</a>
-
-                            <a class="dropdown-item" href="search-result.html">Kết quả tìm kiếm</a>
-
-                            <a class="dropdown-item" href="search-not-found.html">Tìm kiếm Không Tìm thấy</a>
-
-                            <a class="dropdown-item" href="privacy-policy.html">Chính sách bảo mật</a>
-
-                            <a class="dropdown-item" href="terms-conditions.html">Điều khoản Điều kiện</a>
-
-                            <a class="dropdown-item" href="404.html">Trang 404</a>
-
+                            @php
+                                $categories = app(\App\Http\Controllers\HomeController::class)->getForMenu();
+                            @endphp
+                            @foreach ($categories as $item)
+                                <a class="dropdown-item" href="/categorie/{{ $item->id }}">{{ $item->name }}</a>
+                            @endforeach
                         </div>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="contact.html">Liên hệ</a>
-                    </li>
+                    </li> --}}
 
                 </ul>
             </div>
@@ -60,14 +40,11 @@
                 </select>
 
                 <!-- search -->
-                <form class="search-bar">
-                    <input id="search-query" name="s" type="search" placeholder="Tìm Kiếm...">
+                <form action="{{ route('search') }}" method="GET">
+                    <input class="form-control " type="text" name="query" placeholder="Tìm kiếm...">
+                    {{-- <button type="submit">Search</button> --}}
                 </form>
 
-                <button class="navbar-toggler border-0 order-1" type="button" data-toggle="collapse"
-                    data-target="#navigation">
-                    <i class="ti-menu"></i>
-                </button>
                 @guest
                     @if (Route::has('login'))
                         <a class="nav-link" href="{{ route('login') }}">{{ __('Đăng nhập') }}</a>
@@ -78,12 +55,12 @@
                     @endif
                 @else
                     <li class="dropdown nav-item list-unstyled">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="javascript:void" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}
                         </a>
 
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

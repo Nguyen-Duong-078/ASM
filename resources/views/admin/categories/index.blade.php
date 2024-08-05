@@ -9,8 +9,13 @@
         <h4>
             <span class="text-muted fw-light">Quản lý loại tin /</span> Danh sách
         </h4>
+        @if (session()->has('success'))
+            <div class="alert alert-success fw-bold">
+                {{ session()->get('success') }}
+            </div>
+        @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary" href="{{ route('admin.categorys.create') }}"><i
+            <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
                     class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a>
         </div>
         <div class="card">
@@ -28,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($category as $item)
+                        @foreach ($categories as $item)
                             <tr>
                                 <td>{{ $item['id'] }}</td>
                                 <td>{{ $item['name'] }}</td>
@@ -43,14 +48,14 @@
                                     <div class="d-flex justify-content-center">
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
                                             class="btn btn-info btn-sm me-2"
-                                            href="{{ route('admin.categorys.show', $item->id) }}"><i
+                                            href="{{ route('admin.categories.show', $item->id) }}"><i
                                                 class="mdi mdi-eye"></i></a>
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
                                             class="btn btn-warning btn-sm me-2"
-                                            href="{{ route('admin.categorys.edit', $item->id) }}"><i
+                                            href="{{ route('admin.categories.edit', $item->id) }}"><i
                                                 class="mdi mdi-pencil"></i></a>
 
-                                        <form action="{{ route('admin.categorys.destroy', $item->id) }}" method="POST">
+                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"

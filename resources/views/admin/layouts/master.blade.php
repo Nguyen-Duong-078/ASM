@@ -86,8 +86,12 @@
     <script src="{{ asset('themes') }}/admin/vendor/libs/i18n/i18n.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/typeahead-js/typeahead.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/js/menu.js"></script>
+
     <!-- Vendors JS -->
     <script src="{{ asset('themes') }}/admin/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    @yield('script-vendors')
+
     <!-- Main JS -->
     <script src="{{ asset('themes') }}/admin/js/main.js"></script>
 

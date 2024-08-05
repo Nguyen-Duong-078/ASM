@@ -26,9 +26,9 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end py-2">
                     <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="en"
+                        <a class="dropdown-item" href="javascript:void(0);" data-language="vi"
                             data-text-direction="ltr">
-                            <span class="align-middle">English</span>
+                            <span class="align-middle">Việt Nam</span>
                         </a>
                     </li>
                     <li>
@@ -395,7 +395,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">𝑵𝒉𝒖̛ 𝑻𝒉𝒂𝒏𝒉 𝑰𝑰</h6>
+                                    <h6 class="mb-0">𝐄𝐜𝐨𝐦𝐦𝐞𝐫𝐜𝐞</h6>
                                     <small class="text-muted">Admin</small>
                                 </div>
                             </div>
@@ -445,10 +445,12 @@
                         <div class="dropdown-divider my-1"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="admin/logout" target="_blank">
-                            <i class="mdi mdi-logout me-1 mdi-20px"></i>
-                            <span class="align-middle">Đăng xuất</span>
-                        </a>
+                        <form class="dropdown-item text-center" action="{{ route('admin.logout') }}" method="post">
+                            @csrf
+                            <button class="btn btn-danger btn-sm">
+                                <i class="mdi mdi-logout me-1 mdi-20px"></i> Đăng Xuất</button>
+                        </form>
+
                     </li>
                 </ul>
             </li>

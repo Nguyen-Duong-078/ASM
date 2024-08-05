@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\CategorieController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\NewController;
+use App\Http\Controllers\admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
     ->as('admin.')
+    ->middleware(['auth', 'isAdmin'])
     ->group(function () {
 
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        });
+        Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-        Route::prefix('categorys')
-            ->as('categorys.')
-            ->controller(CategoryController::class)
+        Route::prefix('categories')
+            ->as('categories.')
+            ->controller(CategorieController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('create', 'create')->name('create');
@@ -38,10 +39,17 @@ Route::prefix('admin')
                 Route::put('{id}/update', 'update')->name('update');
                 Route::delete('{id}/destroy', 'destroy')->name('destroy');
                 Route::get('/search', 'search')->name('search');
-
-
-
+            });
+        Route::prefix('members')
+            ->as('members.')
+            ->controller(UserController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::put('{id}/update', 'update')->name('update');
+                // Route::delete('{id}/destroy', 'destroy')->name('destroy');
             });
 
         // Route::resource('category', CategoryController::class);
+        Route::post('logout', [DashboardController::class, 'logout'])->name('logout');
     });

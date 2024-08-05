@@ -18,7 +18,7 @@
                     <h4 class="mb-1 mt-3">Xem loại tin</h4>
                 </div>
                 <div class="d-flex align-content-center flex-wrap gap-3">
-                    <a href="{{ route('admin.categorys.index') }}" class="btn btn-info">Quay Lại</a>
+                    <a href="{{ route('admin.categories.index') }}" class="btn btn-info">Quay Lại</a>
                     {{-- <button type="submit" class="btn btn-primary">Cập Nhật</button> --}}
                 </div>
             </div>

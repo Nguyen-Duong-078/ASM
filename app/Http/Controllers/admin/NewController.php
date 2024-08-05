@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Categorie;
 use App\Models\News;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -21,16 +24,16 @@ class NewController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::query()->get();
+        $categories = Categorie::query()->get();
 
-        // Lấy dữ liệu từ request
-        $category_Id = $request->input('catelogue_id');
-
-        $query = News::query()->with('category', 'author')->latest('id');
+        $query = News::query()->with('categorie', 'author')->latest('id');
 
         // lọc theo danh mục
-        if ($category_Id) {
-            $query->where('catelogue_id', $category_Id);
+        if ($request->categorie_id) {
+            $query->where('categorie_id', $request->categorie_id);
+        }
+        if ($request->title) {
+            $query->where('title', $request->title);
         }
 
         // hiện thị khi đã lọc
@@ -39,50 +42,50 @@ class NewController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('news', 'categories'));
     }
 
-
-
-    public function search(Request $request)
-    {
-        $search = $request->input('search');
-        $category = $request->input('catelogue_id');
-        $data = Category::where('name', 'like', '%' . $search . '%')
-            ->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'search'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $category = Category::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('category'));
+        $categories = Categorie::query()->get();
+        $tags = Tag::query()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'tags'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
 
-
     public function store(Request $request)
     {
-        // Lấy tất cả dữ liệu trừ image
-        $data = $request->except('image');
+        try {
+            DB::transaction(function () use ($request) {
+                // dd($request->tag);
+                // Lấy tất cả dữ liệu trừ image
+                $data = $request->except('image');
 
-        // Chưa chọn mặc định 0
-        $data['is_active'] ??= 0;
-        $data['user_id'] = 1;
-        $data['slug'] = Str::slug($data['title']);
-        // Xử lí ảnh
-        if ($request->hasFile('image')) {
-            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+                // Chưa chọn mặc định 0
+                $data['is_active'] ??= 0;
+                $data['user_id'] = Auth::id();
+                $data['slug'] = Str::slug($data['title']);
+                // Xử lí ảnh
+                if ($request->hasFile('image')) {
+                    $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+                }
+
+                // Thêm mới
+                $new = News::query()->create($data);
+
+                $new->tags()->sync($request->tags);
+
+            }, 3);
+            // Quay về index
+            return redirect()
+                ->route('admin.news.index')
+                ->with('success', 'Thêm mới thành công!');
+        } catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
         }
-
-        // Thêm mới
-        News::query()->create($data);
-
-        // Quay về index
-        return redirect()->route('admin.news.index');
     }
 
     /**
@@ -90,7 +93,7 @@ class NewController extends Controller
      */
     public function show(string $id)
     {
-        $data = News::query()->with('category', 'author')->findOrFail($id);
+        $data = News::query()->with('categorie', 'author')->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -99,9 +102,10 @@ class NewController extends Controller
      */
     public function edit(string $id)
     {
-        $category = Category::query()->get();
-        $data = News::query()->with('category', 'author')->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'category'));
+        $categories = Categorie::query()->get();
+        $tags = Tag::query()->get();
+        $data = News::query()->with('categorie', 'author', 'tags')->findOrFail($id);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'categories', 'tags'));
     }
 
     /**
@@ -109,28 +113,34 @@ class NewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $news = News::query()->findOrFail($id);
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $news = News::query()->findOrFail($id);
 
-        // Lấy tất cả dữ liệu trừ image
-        $data = $request->except('image');
+                // Lấy tất cả dữ liệu trừ image
+                $data = $request->except('image');
+                // Chưa chọn mặc định 0
+                $data['is_active'] ??= 0;
+                // Xử lí ảnh
+                if ($request->hasFile('image')) {
+                    $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+                }
+                $imagePath = $news->image;
+                // Cập nhật dữ liệu
+                $news->update($data);
 
-        // Chưa chọn mặc định 0
-        $data['is_active'] ??= 0;
+                $news->tags()->sync($request->tags);
+                // Xóa ảnh cũ
+                if ($imagePath && Storage::exists($imagePath) && $imagePath !== $news->image) {
+                    Storage::delete($imagePath);
+                }
 
-        // Xử lí ảnh
-        if ($request->hasFile('image')) {
-            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+            }, 3);
+            return back()
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
         }
-        $imagePath = $news->image;
-
-        // Cập nhật dữ liệu
-        $news->update($data);
-
-        // Xóa ảnh cũ
-        if ($imagePath && Storage::exists($imagePath) && $imagePath !== $news->image) {
-            Storage::delete($imagePath);
-        }
-        return back();
     }
 
     /**

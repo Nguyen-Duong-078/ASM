@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Techchain') }}</title>
+    <title> Báo tuổi trẻ - @yield('title') </title>
 
     <!-- plugins -->
     <link rel="stylesheet" href="{{ asset('themes') }}/client/plugins/bootstrap/bootstrap.min.css">
@@ -27,9 +27,6 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="" />
     <meta property="og:updated_time" content="2020-03-15T15:40:24+06:00" />
-
-    <!-- Scripts -->
-    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 </head>
 
 <body>
@@ -38,15 +35,13 @@
     @yield('content')
 
     @include('client.layouts.footer')
+
+
     <!-- JS Plugins -->
     <script src="{{ asset('themes') }}/client/plugins/jQuery/jquery.min.js"></script>
-
     <script src="{{ asset('themes') }}/client/plugins/bootstrap/bootstrap.min.js"></script>
-
     <script src="{{ asset('themes') }}/client/plugins/slick/slick.min.js"></script>
-
     <script src="{{ asset('themes') }}/client/plugins/instafeed/instafeed.min.js"></script>
-
 
     <!-- Main Script -->
     <script src="{{ asset('themes') }}/client/js/script.js"></script>

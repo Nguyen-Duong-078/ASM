@@ -9,12 +9,17 @@
         <h4>
             <span class="text-muted fw-light">Quản lý loại tin /</span> Danh sách
         </h4>
+        @if (session()->has('success'))
+            <div class="alert alert-success fw-bold">
+                {{ session()->get('success') }}
+            </div>
+        @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
             <a class="btn btn-primary" href="{{ route('admin.news.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
                 Loại Tin</a>
         </div>
         <form class="d-flex mb-3" method="GET" action="{{ route('admin.news.index') }}">
-            <select class="form-select w-25" name="catelogue_id">
+            <select class="form-select w-20" name="categorie_id">
                 <option value="">Tất cả danh mục</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">
@@ -22,12 +27,12 @@
                     </option>
                 @endforeach
             </select>
+            <input class="form-control w-20 ms-3" type="text" name="title" placeholder="Tìm kiếm">
             <button class="btn btn-primary ms-3" type="submit">Tìm kiếm</button>
         </form>
         <div class="card">
             <div class="card-body">
-                <table id="example"
-                    class=" text-center table table-bordered dt-responsive nowrap table-striped align-middle"
+                <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                     style="width:100%">
                     <thead>
                         <tr>
@@ -36,30 +41,36 @@
                             <th>Nội dung</th>
                             <th>Ảnh</th>
                             <th>Loại tin</th>
-                            <th>Lượt xem</th>
+                            <th>Trạng thái</th>
                             <th>Người thêm</th>
-                            <th>Active</th>
+                            <th>Thẻ</th>
+                            <th>Lượt xem</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($news as $item)
                             <tr>
-                                <td>{{ $item['id'] }}</td>
-                                <td>{{ $item['title'] }}</td>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ Str::words($item->title, 9, '...') }}</td>
                                 <td>
-                                    <textarea class="form-control" cols="30" rows="1" readonly>{{ $item['content'] }}</textarea>
+                                    {!! Str::words($item->content, 5, '...') !!}
                                 </td>
                                 <td>
                                     <img class="rounded-2" src="{{ Storage::url($item->image) }}" alt=""
                                         width="50px" height="50px">
                                 </td>
-                                <td>{{ $item->category->name }}</td>
-                                <td>{{ $item->view }}</td>
+                                <td>{{ $item->categorie->name }}</td>
+                                <td>
+                                    {!! $item->is_active ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}
+                                </td>
                                 <td>{{ $item->author->name }}</td>
                                 <td>
-                                    {!! $item['is_active'] ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}
+                                    @foreach ($item->tags as $tag)
+                                        <span class="badge bg-info">{{ $tag->name }}</span>
+                                    @endforeach
                                 </td>
+                                <td>{{ $item->view }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"

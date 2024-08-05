@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +20,27 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $tags = [
+            'Giải Ngoại hạng Anh',
+            'La Liga',
+            'Ligue 1',
+            'Cúp C1',
+            'World Cup',
+            'Euro',
+            'Gia đình',
+            'Tình yêu',
+            'Hôn nhân',
+            'Giáo dục',
+            'Học bổng',
+            'Giáo viên',
+            'Giáo dục tiểu học',
+            'Giáo dục trung học',
+            'Chương trình giảng dạy'
+        ];
+
+        foreach ($tags as $tag) {
+            Tag::create(['name' => $tag]);
+        }
     }
+
 }

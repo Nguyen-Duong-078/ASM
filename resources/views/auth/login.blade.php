@@ -1,7 +1,11 @@
 @extends('client.layouts.app')
 
+@section('title')
+    Đăng Nhập
+@endsection
+
 @section('content')
-    <div class="container" style="margin-top: 170px;">
+    <div class="container mb-5" style="margin-top: 170px;">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -11,51 +15,45 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('auth.login') }}">
                             @csrf
-
                             <div class="row mb-3 d-flex justify-content-center">
-                                {{-- <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label> --}}
                                 <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        placeholder="Nhập địa chỉ Email" value="{{ old('email') }}" required
-                                        autocomplete="email" autofocus>
-
+                                    <input id="email" type="email" class="form-control" name="email"
+                                        placeholder="Nhập địa chỉ Email" value="{{ old('email') }}" autofocus>
                                     @error('email')
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 Swal.fire({
                                                     icon: 'error',
-                                                    title: 'Sai thông tin đăng nhập',
+                                                    title: 'Lỗi',
                                                     text: '{{ $message }}',
                                                 });
                                             });
                                         </script>
                                     @enderror
-
                                 </div>
                             </div>
 
                             <div class="row mb-3 d-flex justify-content-center">
-                                {{-- <label for="password"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label> --}}
-
                                 <div class="col-md-6">
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        placeholder="Mật khẩu" required autocomplete="current-password">
-
+                                    <input id="password" type="password" class="form-control" name="password"
+                                        placeholder="Mật khẩu" autofocus>
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Lỗi',
+                                                    text: '{{ $message }}',
+                                                });
+                                            });
+                                        </script>
                                     @enderror
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
+                            <div class="row ">
                                 <div class="col-md-6 offset-md-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="remember" id="remember"
@@ -67,8 +65,14 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row mb-0 d-flex justify-content-center">
+                            <div style="margin-left: 390px" class="mb-2">
+                                @if (Route::has('password.request'))
+                                    <a class="btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Quên mật khẩu?') }}
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="row mb-1 d-flex justify-content-center">
                                 <div class="col-md-6 mb-3">
                                     <button type="submit" class="btn btn-primary w-100">
                                         {{ __('Đăng Nhập') }}
@@ -76,13 +80,10 @@
                                 </div>
                             </div>
                             <div class="row d-flex justify-content-center">
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Quên mật khẩu?') }}
-                                    </a>
-                                @endif
+                                Bạn chưa có tài khoản? <a class="btn-link ml-1" href="{{ route('auth.register') }}">
+                                    <strong class="text-danger">Đăng ký ngay</strong>
+                                </a>
                             </div>
-
                         </form>
                     </div>
                 </div>

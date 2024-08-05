@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class News extends Model
 {
@@ -11,20 +13,30 @@ class News extends Model
 
     protected $fillable = [
         'title',
-        'catelogue_id',
+        'categorie_id',
         'slug',
         'content',
         'image',
         'user_id',
-        'is_active'
+        'is_active',
+        'view'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime'
     ];
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function category()
+    public function categorie()
     {
-        return $this->belongsTo(Category::class, 'catelogue_id');
+        return $this->belongsTo(Categorie::class, 'categorie_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
